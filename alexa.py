@@ -1,20 +1,39 @@
 import speech_recognition as sr
 import pyttsx3
+import datetime
+
 
 listener= sr.Recognizer()
-siri= pyttsx3.init()
-siri.say("Hello Joyanti Paul. How can I help you?")
-siri.runAndWait()
+alexa= pyttsx3.init()
 
-try:
-    with sr.Microphone() as source:
-        print('listening')
-        voice= listener.listen(source)
-        command= listener.recognize_google(voice)
-        command= command.lower()
+#alexa.say("Hello Paul. How may I help u?")
+#alexa.runAndWait()
 
-        if 'siri' in command:
-            print(command)
+def talk(text):
+    alexa.say(text)
+    alexa.runAndWait()
 
-except:
-    pass
+def take_command():
+    try:
+        with  sr.Microphone() as source:
+            print("Ami shuntesi, bolen...")
+            voice= listener.listen(source)
+            command= listener.recognize_google(voice)
+            command=command.lower()
+
+            if 'alexa' in command:
+                print(command)
+
+    except:
+        pass
+    return command
+
+
+def run_alexa():
+    command= take_command()
+    if 'time' in command:
+        time= datetime.datetime.now().strftime('%I:%M %p')
+        print(time)
+        talk("Current time is "+time)
+
+run_alexa()
